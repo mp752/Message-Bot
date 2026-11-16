@@ -108,7 +108,7 @@ async def start_web_server() -> None:
     runner = web.AppRunner(app)
     await runner.setup()
     # Bind to localhost only so nobody else can reach it
-    await web.TCPSite(runner, "127.0.0.1", PORT).start()
+    await web.TCPSite(runner, "0.0.0.0", PORT).start()
  
  
 # ---------------------------------------------------------------- discord bot

@@ -10,8 +10,8 @@ OBS:   Add a Browser Source with URL http://localhost:8765  (1280x720, transpare
 import asyncio
 import json
 import os
+import re
 from dotenv import load_dotenv
- 
 import discord
 from aiohttp import web
 from discord import app_commands
@@ -38,7 +38,7 @@ OVERLAY_HTML = """<!doctype html>
   #card.show { opacity:1; transform:translateY(0); }
   #avatar { width:56px; height:56px; border-radius:50%; flex:none; background:#444; }
   #name { font-weight:700; font-size:22px; color:#9db4ff; margin-bottom:4px; }
-  #text { font-size:28px; line-height:1.3; white-space:pre-wrap; word-break:break-word; }
+  #text { font-size:20px; line-height:1.3; white-space:pre-wrap; word-break:break-word; }
   #img { max-width:100%; max-height:240px; border-radius:10px; margin-top:10px; display:none; }
 </style></head>
 <body>
@@ -153,10 +153,11 @@ async def show_on_stream(interaction: discord.Interaction, message: discord.Mess
          if a.content_type and a.content_type.startswith("image/")),
         None,
     )
+    msg = re.sub(r"<.*?>", "", message.content)
     await broadcast({
         "author": message.author.display_name,
         "avatar": message.author.display_avatar.url,
-        "content": message.content,
+        "content": msg,
         "image": image,
     })
     await schedule_auto_clear()

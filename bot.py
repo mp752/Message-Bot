@@ -59,6 +59,7 @@ OVERLAY_HTML = """<!doctype html>
     // textContent (not innerHTML) so message text can never inject HTML
     document.getElementById('name').textContent = m.author;
     document.getElementById('text').textContent = m.content;
+    document.getElementById('name').style.color = m.color;
     document.getElementById('avatar').src = m.avatar || '';
     const img = document.getElementById('img');
     if (m.image) { img.src = m.image; img.style.display = 'block'; }
@@ -154,11 +155,13 @@ async def show_on_stream(interaction: discord.Interaction, message: discord.Mess
         None,
     )
     msg = re.sub(r"<.*?>", "", message.content)
+    color = str(message.author.color)
     await broadcast({
         "author": message.author.display_name,
         "avatar": message.author.display_avatar.url,
         "content": msg,
         "image": image,
+        "color": color,
     })
     await schedule_auto_clear()
     await interaction.response.send_message("Showing on stream.", ephemeral=True)

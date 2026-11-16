@@ -20,6 +20,7 @@ load_dotenv()
  
 TOKEN = os.getenv("DISCORD_TOKEN")
 GUILD_ID = [int(g) for g in os.getenv("GUILD_ID", "").replace(" ", "").split(",") if g]  # optional: instant command sync to one server
+print(GUILD_ID)
 PORT = int(os.getenv("PORT", "8765"))
 AUTO_CLEAR_SECONDS = 0  # 0 = stay on screen until /clearstream
  
@@ -59,7 +60,6 @@ OVERLAY_HTML = """<!doctype html>
     // textContent (not innerHTML) so message text can never inject HTML
     document.getElementById('name').textContent = m.author;
     document.getElementById('text').textContent = m.content;
-    document.getElementById('name').style.color = m.color;
     document.getElementById('avatar').src = m.avatar || '';
     const img = document.getElementById('img');
     if (m.image) { img.src = m.image; img.style.display = 'block'; }

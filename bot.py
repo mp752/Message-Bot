@@ -156,7 +156,7 @@ async def show_on_stream(interaction: discord.Interaction, message: discord.Mess
          if a.content_type and a.content_type.startswith("image/")),
         None,
     )
-    msg = re.sub(r"<.*?>", "", message.content)
+    msg = re.sub(r"<.*?>", "", message.clean_content)
     color = str(message.author.color)
     await broadcast({
         "author": message.author.display_name,

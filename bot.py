@@ -19,8 +19,8 @@ from discord import app_commands
 load_dotenv()
  
 TOKEN = os.getenv("DISCORD_TOKEN")
-GUILD_ID = int(os.getenv("GUILD_ID", "0"))  # optional: instant command sync to one server
-PORT = int(os.getenv("PORT") or 8765) 
+GUILD_ID = [int(g) for g in os.getenv("GUILD_ID", "").replace(" ", "").split(",") if g]  # optional: instant command sync to one server
+PORT = int(os.getenv("PORT", "8765"))
 AUTO_CLEAR_SECONDS = 0  # 0 = stay on screen until /clearstream
  
 # ---------------------------------------------------------------- overlay server
@@ -122,10 +122,11 @@ class StageBot(discord.Client):
     async def setup_hook(self) -> None:
         await start_web_server()
         if GUILD_ID:
-            guild = discord.Object(id=GUILD_ID)
-            self.tree.copy_global_to(guild=guild)
-            synced = await self.tree.sync(guild=guild)
-            await self.tree.sync(guild=guild)
+            for gid in GUILD_ID:
+                guild = discord.Object(id=gid)
+                self.tree.copy_global_to(guild=guild)
+                synced = await self.tree.sync(guild=guild)
+                await self.tree.sync(guild=guild)
         
         else:
             await self.tree.sync()

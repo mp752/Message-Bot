@@ -21,7 +21,7 @@ load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
 GUILD_ID = int(os.getenv("GUILD_ID", "0"))  # optional: instant command sync to one server
 PORT = int(os.getenv("PORT")) or 8765
-AUTO_CLEAR_SECONDS = 20  # 0 = stay on screen until /clearstream
+AUTO_CLEAR_SECONDS = 0  # 0 = stay on screen until /clearstream
  
 # ---------------------------------------------------------------- overlay server
 OVERLAY_HTML = """<!doctype html>
@@ -107,7 +107,6 @@ async def start_web_server() -> None:
     app.add_routes([web.get("/", index), web.get("/events", events)])
     runner = web.AppRunner(app)
     await runner.setup()
-    # Bind to localhost only so nobody else can reach it
     await web.TCPSite(runner, "0.0.0.0", PORT).start()
  
  
